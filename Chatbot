@@ -1,0 +1,59 @@
+from datetime import datetime
+
+def obtener_edad(fecha_nacimiento):
+    hoy = datetime.now()
+    fecha_nacimiento = datetime.strptime(fecha_nacimiento, "%Y-%m-%d")
+    edad = hoy.year - fecha_nacimiento.year - ((hoy.month, hoy.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
+    return edad
+
+def realizar_operacion(operacion, num1, num2):
+    if operacion.lower() == 'suma':
+        return num1 + num2
+    elif operacion.lower() == 'resta':
+        return num1 - num2
+    elif operacion.lower() == 'multiplicacion':
+        return num1 * num2
+    elif operacion.lower() == 'division':
+        if num2 != 0:
+            return num1 / num2
+        else:
+            return "Error: No se puede dividir por cero."
+    else:
+        return None
+
+def chatbot():
+    user_name = input("Chatbot: Hola humano, ¿cuál es tu nombre? ")
+    print(f"Chatbot: Bienvenido, {user_name}.")
+
+    fecha_nacimiento = input(f"Chatbot: Antes de comenzar, apuesto a que puedo adivinar tu edad! ¿Cuál es tu fecha de nacimiento, {user_name}? (Formato: YYYY-MM-DD) ")
+    
+    try:
+        edad = obtener_edad(fecha_nacimiento)
+        print(f"Chatbot: fue algo difici, {user_name}!!. Tienes {edad} años.")
+    except ValueError:
+        print("Chatbot: Lo siento, la fecha de nacimiento no es válida.")
+        return
+    
+    while True:
+        print(f"Chatbot: De acuerdo {user_name}. Solo puedo ayudarte con algunas operaciones ¿Te gustaría realizar una suma, resta, multiplicación o división? .(Escribe 'adiós' para salir)")
+        operacion = input(f"{user_name}: ")
+        
+        if operacion.lower() == 'adiós':
+            print(f"Chatbot: ¡Hasta luego, {user_name}! Espero haberte ayudado.")
+            break
+        
+        if operacion.lower() in ['suma', 'resta', 'multiplicacion', 'division']:
+            num1 = float(input("Chatbot: Ingresa el primer número: "))
+            num2 = float(input("Chatbot: Ingresa el segundo número: "))
+            
+            resultado = realizar_operacion(operacion, num1, num2)
+            
+            if resultado is not None:
+                print(f"Chatbot: El resultado de la {operacion} es: {resultado}")
+            else:
+                print("Chatbot: Operación no reconocida. Por favor, elige suma, resta, multiplicación o división.")
+        else:
+            print("Chatbot: Operación no reconocida. Por favor, elige suma, resta, multiplicación, división o escribe 'adiós'.")
+
+if __name__ == "__main__":
+    chatbot()
